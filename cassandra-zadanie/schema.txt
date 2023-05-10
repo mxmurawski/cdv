@@ -1,0 +1,52 @@
+create keyspace MyApp
+with replication = {
+    'class':'SimpleStrategy',
+    'replication_factor':1
+    };
+use MyApp;
+create table Users
+(
+    FirstName text,
+    LastName text,
+    Email text,
+    Password text,
+    VotedUniversityId int,
+    primary key ( (Email,Password) )
+);
+select * from MyApp.users;
+
+create table Universities(
+    Name text primary key
+);
+create table UniversityDepartments
+(
+    UniversityName text,
+    Name text,
+    primary key ( (UniversityName, Name) )
+);
+create table UniversityDepartmentFields
+(
+    UniversityName text,
+    UniversityDepartmentName text,
+    Name text,
+    Group text,
+    primary key ( (UniversityDepartmentName, Name, group) )
+);
+create table FavouriteUniversities
+(
+    UserEmail text,
+    UniversityName text,
+    primary key ( (UserEmail,UniversityName) )
+);
+INSERT INTO myapp.favouriteuniversities (useremail, universityname) VALUES ('a@a.pl', 'CDV');
+INSERT INTO myapp.favouriteuniversities (useremail, universityname) VALUES ('a@a.pl', 'WSB');
+INSERT INTO myapp.universities (name) VALUES ('WSB');
+INSERT INTO myapp.universities (name) VALUES ('CDV');
+INSERT INTO myapp.universitydepartmentfields (universitydepartmentname, name, group, universityname) VALUES ('wsb1', 'wsb1.1', 'medyczny', 'WSB');
+INSERT INTO myapp.universitydepartmentfields (universitydepartmentname, name, group, universityname) VALUES ('cdv1', 'cdv1.1', 'techniczny', 'CDV');
+INSERT INTO myapp.universitydepartments (universityname, name) VALUES ('WSB', 'wsb1');
+INSERT INTO myapp.universitydepartments (universityname, name) VALUES ('CDV', 'cdv1');
+INSERT INTO myapp.universitydepartments (universityname, name) VALUES ('CDV', 'cdv2');
+INSERT INTO myapp.universitydepartments (universityname, name) VALUES ('WSB', 'wsb2');
+INSERT INTO myapp.users (email, password, firstname, lastname, voteduniversityid) VALUES ('a@a.pl', 'aaa', 'jan', 'kowalski', null);
+INSERT INTO myapp.users (email, password, firstname, lastname, voteduniversityid) VALUES ('b@b.pl', 'bbb', 'adam', 'nowak', null);
